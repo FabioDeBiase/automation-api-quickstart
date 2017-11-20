@@ -1,0 +1,123 @@
+{
+    "Defaults" : {
+        "Application" : "Applicazione",
+        "SubApplication" : "Subapplicazione",
+        "RunAs" : "ctmagent",
+        "Host" : "xxxxxxxxx",
+		"ControlmServer": "xxxxxxx",
+		"Confirm": true,
+		"OrderMethod": "Manual",
+		"DaysKeepActive": "98",
+		"Variables": [
+                         {"TodayDate": "%%$DATE"},
+						 {"SchedulingDate": "%%$ODATE"}
+	                 ],
+        "Job": {
+            "When" : {
+                "Months": ["JAN", "OCT", "DEC"],
+                "MonthDays":["22","1","11"],
+                "WeekDays":["MON","TUE", "WED", "THU", "FRI"],
+                "FromTime":"0300",
+                "ToTime":"2100"
+            },
+            "ActionIfFailure" : {
+                "Type": "If",       
+                "CompletionStatus": "NOTOK",
+                
+                "mailToTeam": {
+                    "Type": "Mail",
+                    "Message": "%%JOBNAME failed",
+                    "To": "team@mycomp.com"
+                }
+            }
+        }
+    },
+
+	
+	
+    "TESTFOLDER": {
+        "Type": "Folder",
+        "Comment" : "Code reviewd da Fabio De Biase",
+		"Waitcondition": {
+                              "Type": "WaitForEvents",
+                              "Events": [
+							             {"Event":"e3"},
+										       {"Event":"e5", "OrderDate":"NoDate"} #THIS LINE IS NOT WORKING
+							                          ]
+                      },
+		
+
+        "Job1": {
+            "Type": "Job:Command",
+            "Command": "/Prodotti/Control-M/ctmagent/ctm/scripts/ag_diag_comm",
+			"Application" : "",
+			"SubApplication" : "",
+            "Host" : "",
+			"Variables": [
+                         {"TodayDate": "16102017"},
+						 {"SchedulingDate": "17102017"}
+	                     ],
+            "Waitcondition": {
+                              "Type": "WaitForEvents",
+                              "Events": [
+							             {"Event":"e3"},
+										 {"Event":"CONDITION3"}
+							            ]
+                             }
+	        
+            
+		        },
+
+        "Job2": {
+            "Type": "Job:Command",
+            "Command": "/Prodotti/Control-M/ctmagent/ctm/scripts/ag_diag_comm",
+			"Application" : "",
+			"SubApplication" : "",
+            "Host" : ""
+        },
+		
+		"Job3": {
+            "Type": "Job:Command",
+            "Command": "/Prodotti/Control-M/ctmagent/ctm/scripts/ag_diag_comm",
+			"Application" : "",
+			"SubApplication" : "",
+            "Host" : ""
+        },
+		
+		"Job4": {
+            "Type": "Job:Command",
+            "Command": "/Prodotti/Control-M/ctmagent/ctm/scripts/ag_diag_comm",
+			"Application" : "",
+			"SubApplication" : "",
+            "Host" : ""
+        },
+		
+		"Job5": {
+            "Type": "Job:Command",
+            "Command": "/Prodotti/Control-M/ctmagent/ctm/scripts/ag_diag_comm",
+			"Application" : "",
+			"SubApplication" : "",
+            "Host" : ""
+        },
+
+        "Condition": {
+            "Type": "Flow",
+            "Sequence": ["Job1", "Job2"]
+        },
+		"Condition2": {
+            "Type": "Flow",
+            "Sequence": ["Job2", "Job3"]
+        },
+		"Condition3": {
+            "Type": "Flow",
+            "Sequence": ["Job3", "Job4"]
+        },
+		"Condition4": {
+            "Type": "Flow",
+            "Sequence": ["Job4", "Job5"]
+        }
+		
+    }
+
+    
+}
